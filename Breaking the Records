@@ -1,0 +1,78 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the breakingRecords function below.
+    static int[] breakingRecords(int[] scores) {
+        
+        int numberOfGames = scores.length;
+        int[] highestScore = new int[scores.length];
+        int[] lowestScore = new int[scores.length];
+        int min = 0;
+        int max = 0;
+        boolean flag = true;
+        
+        highestScore[0] = scores[0];
+        lowestScore[0] = scores[0];      
+        
+        
+        for (int currentGame = 1; currentGame < numberOfGames; currentGame++) {
+            
+            if(scores[currentGame] > highestScore[currentGame-1]){
+                highestScore[currentGame] = scores[currentGame];
+                lowestScore[currentGame] = lowestScore[currentGame-1];
+                max++;
+                flag = false;
+                
+            }
+            
+            if(scores[currentGame] < lowestScore[currentGame-1]){
+                
+                highestScore[currentGame] = highestScore[currentGame-1];
+                lowestScore[currentGame] = scores[currentGame];
+                min++;
+                flag = false;
+                
+            }
+            
+            if (flag){
+            
+                highestScore[currentGame] = highestScore[currentGame-1];
+                lowestScore[currentGame] = lowestScore[currentGame-1];
+                
+            }
+
+            flag = true;
+        }
+
+        int[] result = {max,min};
+        return result;
+        
+    }
+
+    
+
+    public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+
+        int[] scores = new int[n];
+
+        for (int i = 0; i < scores.length; i++) {
+            scores[i] = scanner.nextInt();
+        }
+        int[] result = breakingRecords(scores);
+
+        
+        for (int i : result) {
+            System.out.print(i + " ");
+        }
+        scanner.close();
+    }
+}
